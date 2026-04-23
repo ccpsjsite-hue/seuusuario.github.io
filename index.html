@@ -988,6 +988,270 @@
   }
 
   /* ── PROGRAMAS ── */
+  /* ── EDITAIS ── */
+  .editais { padding: 5rem 3rem; background: var(--verde-ultra); }
+  .editais-inner { max-width: 900px; margin: 0 auto; }
+  .edital-card {
+    background: var(--branco);
+    border: 1.5px solid var(--borda);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(45,106,45,0.08);
+    margin-top: 2.5rem;
+  }
+  .edital-header {
+    background: var(--verde);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .edital-header-icon {
+    width: 50px; height: 50px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+  }
+  .edital-header-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+  }
+  .edital-header-text span { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
+  .edital-badge {
+    margin-left: auto;
+    background: var(--laranja); color: #fff;
+    font-size: 0.7rem; font-weight: 700;
+    padding: 6px 14px; border-radius: 50px;
+    letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+  }
+  .edital-body { padding: 2rem; }
+  .edital-info-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1rem; margin-bottom: 1.75rem;
+  }
+  .edital-info-item {
+    background: var(--verde-ultra); border: 1px solid var(--borda);
+    border-radius: 12px; padding: 0.9rem 1rem;
+  }
+  .edital-info-item small {
+    display: block; font-size: 0.68rem; font-weight: 700;
+    color: var(--verde); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+  }
+  .edital-info-item strong { font-size: 0.88rem; color: var(--cinza); font-weight: 600; }
+  .edital-desc {
+    font-size: 0.92rem; color: var(--cinza-medio); line-height: 1.75;
+    margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--borda);
+  }
+  .edital-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; color: var(--verde); margin-bottom: 0.75rem;
+  }
+  .edital-cargo-box {
+    background: var(--verde-claro); border: 1px solid var(--borda);
+    border-radius: 14px; padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .cargo-nome {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--cinza);
+  }
+  .cargo-detalhe { font-size: 0.82rem; color: var(--cinza-medio); margin-top: 3px; }
+  .edital-cargo-stats { display: flex; gap: 1.5rem; margin-left: auto; flex-wrap: wrap; }
+  .edital-cargo-stats span { text-align: center; }
+  .edital-cargo-stats span strong {
+    display: block; font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--verde); font-weight: 700;
+  }
+  .edital-cargo-stats span small {
+    font-size: 0.65rem; color: var(--cinza-medio);
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+  }
+  .edital-atrib-list { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+  .edital-atrib-list li {
+    font-size: 0.88rem; color: var(--cinza-medio);
+    padding: 7px 0 7px 1.5rem;
+    border-bottom: 1px dashed var(--borda);
+    position: relative; line-height: 1.5;
+  }
+  .edital-atrib-list li:last-child { border-bottom: none; }
+  .edital-atrib-list li::before {
+    content: '✔'; position: absolute; left: 0;
+    color: var(--verde); font-size: 0.75rem; top: 8px;
+  }
+  .edital-toggle-btn {
+    width: 100%; background: none; border: 1.5px solid var(--borda);
+    border-radius: 12px; font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem; font-weight: 600; color: var(--verde);
+    cursor: pointer; padding: 0.85rem 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.2s; margin-bottom: 0;
+  }
+  .edital-toggle-btn:hover { background: var(--verde-claro); border-color: var(--verde); }
+  .edital-full { display: none; margin-top: 1.75rem; }
+  .edital-full.open { display: block; }
+  .edital-full-section {
+    margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--borda);
+  }
+  .edital-full-section:last-child { border-bottom: none; margin-bottom: 0; }
+  .edital-full-section h5 {
+    font-size: 0.75rem; font-weight: 700; color: var(--verde);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem;
+  }
+  .edital-full-section p { font-size: 0.87rem; color: var(--cinza-medio); line-height: 1.7; }
+  .edital-tabela { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 0.5rem; }
+  .edital-tabela th {
+    background: var(--verde); color: #fff;
+    padding: 9px 12px; text-align: left; font-weight: 600;
+  }
+  .edital-tabela td { padding: 9px 12px; border-bottom: 1px solid var(--borda); color: var(--cinza); }
+  .edital-tabela tr:last-child td { border-bottom: none; }
+  .edital-inscricao {
+    background: linear-gradient(135deg, var(--verde-claro) 0%, var(--laranja-claro) 100%);
+    border: 1.5px solid var(--borda); border-radius: 16px;
+    padding: 1.5rem 1.75rem; margin-top: 1.75rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .edital-inscricao-text h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700; color: var(--cinza); margin-bottom: 6px;
+  }
+  .edital-inscricao-text p { font-size: 0.85rem; color: var(--cinza-medio); line-height: 1.6; }
+  .edital-inscricao-text a { color: var(--verde); font-weight: 600; text-decoration: none; }
+  .btn-edital-inscricao {
+    margin-left: auto;
+    background: var(--laranja); color: #fff;
+    border: none; border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem; font-weight: 700;
+    padding: 12px 26px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: background 0.2s, transform 0.1s; white-space: nowrap;
+  }
+  .btn-edital-inscricao:hover { background: #c96510; transform: translateY(-1px); }
+
+  @media (max-width: 900px) {
+    .editais { padding: 3.5rem 1.25rem; }
+    .edital-info-grid { grid-template-columns: 1fr 1fr; }
+    .edital-cargo-stats { margin-left: 0; margin-top: 0.5rem; }
+    .btn-edital-inscricao { margin-left: 0; margin-top: 0.75rem; width: 100%; text-align: center; }
+    .edital-badge { margin-left: 0; }
+  }
+  @media (max-width: 480px) {
+    .edital-info-grid { grid-template-columns: 1fr; }
+    .edital-body { padding: 1.25rem; }
+    .edital-header { padding: 1.25rem; gap: 12px; }
+    .edital-header-text h3 { font-size: 1rem; }
+    .edital-tabela { font-size: 0.75rem; }
+    .edital-tabela th, .edital-tabela td { padding: 7px 8px; }
+    .edital-cargo-box { flex-direction: column; align-items: flex-start; }
+    .edital-cargo-stats { gap: 1rem; }
+  }
+
+  /* ── BANNER EDITAIS ── */
+  .editais-banner {
+    padding: 3rem 3rem;
+    background: var(--branco);
+  }
+  .editais-banner-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .editais-banner-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--laranja-claro); border: 1px solid #f5c89a;
+    border-radius: 50px; padding: 5px 14px;
+    font-size: 0.72rem; font-weight: 700; color: var(--laranja);
+    letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 1.25rem;
+  }
+  .editais-banner-label::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--laranja); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .editais-banner-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--cinza);
+    margin-bottom: 1.25rem;
+  }
+  .editais-cards-row {
+    display: flex; gap: 1.25rem; flex-wrap: wrap;
+  }
+  .edital-banner-card {
+    flex: 1; min-width: 280px;
+    background: linear-gradient(135deg, #1e5c1e 0%, #2D6A2D 60%, #3D8B3D 100%);
+    border-radius: 20px; padding: 1.75rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    text-decoration: none; color: #fff;
+    box-shadow: 0 8px 32px rgba(45,106,45,0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .edital-banner-card::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .edital-banner-card::after {
+    content: '';
+    position: absolute; bottom: -30px; right: 60px;
+    width: 100px; height: 100px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .edital-banner-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(45,106,45,0.35);
+  }
+  .edital-banner-icon {
+    width: 56px; height: 56px; flex-shrink: 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+  }
+  .edital-banner-info { flex: 1; z-index: 1; }
+  .edital-banner-badge {
+    display: inline-block;
+    background: var(--laranja); color: #fff;
+    font-size: 0.65rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 50px;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .edital-banner-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; color: #fff;
+    margin-bottom: 6px; line-height: 1.3;
+  }
+  .edital-banner-info p {
+    font-size: 0.8rem; color: rgba(255,255,255,0.78); line-height: 1.5;
+  }
+  .edital-banner-arrow {
+    font-size: 1.4rem; color: rgba(255,255,255,0.7);
+    z-index: 1; transition: transform 0.2s;
+  }
+  .edital-banner-card:hover .edital-banner-arrow {
+    transform: translateX(5px);
+  }
+  .edital-banner-ver-todos {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 1.25rem;
+    font-size: 0.85rem; font-weight: 600; color: var(--verde);
+    text-decoration: none; transition: gap 0.2s;
+  }
+  .edital-banner-ver-todos:hover { gap: 12px; }
+
+  @media (max-width: 900px) {
+    .editais-banner { padding: 2.5rem 1.25rem; }
+    .edital-banner-card { min-width: 100%; }
+  }
+
 </style>
 
 <body>
@@ -1068,6 +1332,7 @@
     <a href="#programas" onclick="closeMenu()">Programas</a>
     <a href="#sobre" onclick="closeMenu()">Sobre nós</a>
     <a href="#impacto" onclick="closeMenu()">Impacto</a>
+    <a href="editais.html" onclick="closeMenu()">Editais</a>
     <a href="#contato" onclick="closeMenu()">Contato</a>
     <a href="#doar" class="nav-cta" onclick="closeMenu()">Fazer doação</a>
   </div>
@@ -1242,6 +1507,34 @@
   </div>
 </section>
 
+<!-- BANNER EDITAIS -->
+<section class="editais-banner">
+  <div class="editais-banner-inner">
+    <div class="editais-banner-label">Processo seletivo aberto</div>
+    <h2 class="editais-banner-title">Oportunidades de trabalho no CCPSJ</h2>
+    <div class="editais-cards-row">
+
+      <a href="editais.html" class="edital-banner-card">
+        <div class="edital-banner-icon">📋</div>
+        <div class="edital-banner-info">
+          <span class="edital-banner-badge">🟠 Em andamento</span>
+          <h3>Edital N° 03/2026 — Auxiliar Administrativo</h3>
+          <p>
+            Programa Ceará Sem Fome · 1 vaga · R$ 1.621/mês<br>
+            Inscrições até <strong style="color:#fff;">24 de Abril de 2026</strong>
+          </p>
+        </div>
+        <span class="edital-banner-arrow">→</span>
+      </a>
+
+    </div>
+    <a href="editais.html" class="edital-banner-ver-todos">
+      Ver todos os editais →
+    </a>
+  </div>
+</section>
+
+
 <!-- SOBRE -->
 <section class="sobre" id="sobre">
   <div class="sobre-inner">
@@ -1343,6 +1636,8 @@
   </div>
 </section>
 
+
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">CCPSJ</div>
@@ -1393,7 +1688,22 @@
 </div>
 
 <script>
-  const PIX_CNPJ = '12460630000128';
+  function toggleEdital() {
+    const full = document.getElementById('edital-full');
+    const label = document.getElementById('edital-toggle-label');
+    const arrow = document.getElementById('edital-toggle-arrow');
+    full.classList.toggle('open');
+    if (full.classList.contains('open')) {
+      label.textContent = 'Recolher edital';
+      arrow.textContent = '▲';
+      full.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      label.textContent = 'Ver edital completo';
+      arrow.textContent = '▼';
+    }
+  }
+
+    const PIX_CNPJ = '12460630000128';
   let selectedAmt = 25;
 
   function toggleMenu() {
