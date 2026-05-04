@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editais de Seleção — CCPSJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde: #2D6A2D;
+    --verde-medio: #3D8B3D;
+    --verde-claro: #E8F5E8;
+    --verde-ultra: #F2FAF2;
+    --laranja: #E07820;
+    --laranja-claro: #FEF3E8;
+    --branco: #FFFFFF;
+    --cinza: #3A3A3A;
+    --cinza-medio: #6B6B6B;
+    --cinza-claro: #F5F5F5;
+    --borda: #D8EDD8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--branco);
+    color: var(--cinza);
+    overflow-x: hidden;
+  }
+
+  #bg-canvas {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: -1; pointer-events: none;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--borda);
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 3rem;
+  }
+  .nav-logo {
+    display: flex; align-items: center;
+    gap: 12px; text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 44px; height: 44px;
+    background: var(--branco); border-radius: 50%;
+    border: 2px solid var(--borda);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .nav-logo-icon svg { width: 30px; height: 30px; }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700; color: var(--verde); line-height: 1;
+  }
+  .nav-brand small {
+    display: block; font-family: 'Outfit', sans-serif;
+    font-size: 0.6rem; font-weight: 400; color: var(--cinza-medio);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-links a {
+    font-size: 0.875rem; color: var(--cinza-medio);
+    text-decoration: none; font-weight: 500; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--verde); }
+  .nav-links a.active { color: var(--verde); font-weight: 700; }
+  .nav-cta {
+    background: var(--verde) !important; color: #fff !important;
+    padding: 9px 22px; border-radius: 50px;
+    font-weight: 600 !important; font-size: 0.85rem !important;
+    transition: background 0.2s, transform 0.1s !important;
+  }
+  .nav-cta:hover { background: var(--verde-medio) !important; transform: translateY(-1px); }
+  .nav-hamburger {
+    display: none; flex-direction: column;
+    justify-content: center; gap: 5px;
+    background: none; border: none; cursor: pointer;
+    padding: 6px; border-radius: 8px;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--verde); border-radius: 2px; transition: all 0.25s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── HERO EDITAIS ── */
+  .editais-hero {
+    background: linear-gradient(160deg, var(--verde-ultra) 0%, var(--branco) 70%);
+    padding: 4rem 3rem 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .editais-hero .breadcrumb {
+    font-size: 0.8rem; color: var(--cinza-medio);
+    margin-bottom: 1rem; display: flex; align-items: center; gap: 6px;
+  }
+  .editais-hero .breadcrumb a {
+    color: var(--verde); text-decoration: none; font-weight: 600;
+  }
+  .editais-hero .breadcrumb a:hover { text-decoration: underline; }
+  .editais-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900; line-height: 1.1;
+    color: var(--cinza); margin-bottom: 1rem;
+  }
+  .editais-hero h1 em { font-style: italic; color: var(--verde); }
+  .editais-hero p {
+    font-size: 1rem; color: var(--cinza-medio);
+    line-height: 1.75; max-width: 600px;
+  }
+  .editais-hero-stats {
+    display: flex; gap: 2rem; margin-top: 2rem;
+    padding-top: 2rem; border-top: 1px solid var(--borda);
+    flex-wrap: wrap;
+  }
+  .editais-hero-stats div { display: flex; flex-direction: column; }
+  .editais-hero-stats strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700; color: var(--verde);
+  }
+  .editais-hero-stats span { font-size: 0.75rem; color: var(--cinza-medio); line-height: 1.4; }
+
+  /* ── FILTROS ── */
+  .editais-filtros {
+    max-width: 1000px; margin: 0 auto;
+    padding: 0 3rem 1.5rem;
+    display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;
+  }
+  .filtro-label { font-size: 0.8rem; font-weight: 600; color: var(--cinza-medio); margin-right: 4px; }
+  .filtro-btn {
+    background: var(--branco); border: 1.5px solid var(--borda);
+    border-radius: 50px; font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem; font-weight: 600; color: var(--cinza-medio);
+    padding: 7px 16px; cursor: pointer; transition: all 0.18s;
+  }
+  .filtro-btn:hover, .filtro-btn.active {
+    background: var(--verde); border-color: var(--verde); color: #fff;
+  }
+
+  /* ── LISTA DE EDITAIS ── */
+  .editais-lista {
+    max-width: 1000px; margin: 0 auto;
+    padding: 0 3rem 5rem;
+    display: flex; flex-direction: column; gap: 1.75rem;
+  }
+
+  /* ── CARD EDITAL ── */
+  .edital-card {
+    background: var(--branco);
+    border: 1.5px solid var(--borda);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(45,106,45,0.07);
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+  .edital-card:hover {
+    box-shadow: 0 12px 40px rgba(45,106,45,0.12);
+    transform: translateY(-2px);
+  }
+  .edital-header {
+    background: var(--verde); padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .edital-header-icon {
+    width: 50px; height: 50px;
+    background: rgba(255,255,255,0.18); border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; flex-shrink: 0;
+  }
+  .edital-header-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+  }
+  .edital-header-text span { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
+  .edital-badge {
+    margin-left: auto;
+    font-size: 0.7rem; font-weight: 700;
+    padding: 6px 14px; border-radius: 50px;
+    letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
+  }
+  .edital-badge.aberto { background: var(--laranja); color: #fff; }
+  .edital-badge.encerrado { background: var(--cinza-claro); color: var(--cinza-medio); }
+  .edital-badge.resultado { background: #1a7a4a; color: #fff; }
+
+  .edital-body { padding: 2rem; }
+
+  .edital-info-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1rem; margin-bottom: 1.75rem;
+  }
+  .edital-info-item {
+    background: var(--verde-ultra); border: 1px solid var(--borda);
+    border-radius: 12px; padding: 0.9rem 1rem;
+  }
+  .edital-info-item small {
+    display: block; font-size: 0.68rem; font-weight: 700;
+    color: var(--verde); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+  }
+  .edital-info-item strong { font-size: 0.88rem; color: var(--cinza); font-weight: 600; }
+
+  .edital-desc {
+    font-size: 0.92rem; color: var(--cinza-medio); line-height: 1.75;
+    margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--borda);
+  }
+
+  .edital-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; color: var(--verde); margin-bottom: 0.75rem;
+  }
+
+  .edital-cargo-box {
+    background: var(--verde-claro); border: 1px solid var(--borda);
+    border-radius: 14px; padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .cargo-nome {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--cinza);
+  }
+  .cargo-detalhe { font-size: 0.82rem; color: var(--cinza-medio); margin-top: 3px; }
+  .edital-cargo-stats { display: flex; gap: 1.5rem; margin-left: auto; flex-wrap: wrap; }
+  .edital-cargo-stats span { text-align: center; }
+  .edital-cargo-stats span strong {
+    display: block; font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--verde); font-weight: 700;
+  }
+  .edital-cargo-stats span small {
+    font-size: 0.65rem; color: var(--cinza-medio);
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+  }
+
+  .edital-atrib-list { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+  .edital-atrib-list li {
+    font-size: 0.88rem; color: var(--cinza-medio);
+    padding: 7px 0 7px 1.5rem;
+    border-bottom: 1px dashed var(--borda);
+    position: relative; line-height: 1.5;
+  }
+  .edital-atrib-list li:last-child { border-bottom: none; }
+  .edital-atrib-list li::before {
+    content: '✔'; position: absolute; left: 0;
+    color: var(--verde); font-size: 0.75rem; top: 8px;
+  }
+
+  .edital-toggle-btn {
+    width: 100%; background: none; border: 1.5px solid var(--borda);
+    border-radius: 12px; font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem; font-weight: 600; color: var(--verde);
+    cursor: pointer; padding: 0.85rem 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.2s;
+  }
+  .edital-toggle-btn:hover { background: var(--verde-claro); border-color: var(--verde); }
+  .edital-full { display: none; margin-top: 1.75rem; }
+  .edital-full.open { display: block; }
+  .edital-full-section {
+    margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--borda);
+  }
+  .edital-full-section:last-child { border-bottom: none; margin-bottom: 0; }
+  .edital-full-section h5 {
+    font-size: 0.75rem; font-weight: 700; color: var(--verde);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem;
+  }
+  .edital-full-section p { font-size: 0.87rem; color: var(--cinza-medio); line-height: 1.7; }
+  .edital-tabela { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 0.5rem; }
+  .edital-tabela th {
+    background: var(--verde); color: #fff;
+    padding: 9px 12px; text-align: left; font-weight: 600;
+  }
+  .edital-tabela td { padding: 9px 12px; border-bottom: 1px solid var(--borda); color: var(--cinza); }
+  .edital-tabela tr:last-child td { border-bottom: none; }
+
+  .edital-inscricao {
+    background: linear-gradient(135deg, var(--verde-claro) 0%, var(--laranja-claro) 100%);
+    border: 1.5px solid var(--borda); border-radius: 16px;
+    padding: 1.5rem 1.75rem; margin-top: 1.75rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .edital-inscricao-text h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700; color: var(--cinza); margin-bottom: 6px;
+  }
+  .edital-inscricao-text p { font-size: 0.85rem; color: var(--cinza-medio); line-height: 1.6; }
+  .edital-inscricao-text a { color: var(--verde); font-weight: 600; text-decoration: none; }
+  .btn-edital-inscricao {
+    margin-left: auto; background: var(--laranja); color: #fff;
+    border: none; border-radius: 50px;
+    font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700;
+    padding: 12px 26px; cursor: pointer; text-decoration: none;
+    display: inline-block; transition: background 0.2s, transform 0.1s; white-space: nowrap;
+  }
+  .btn-edital-inscricao:hover { background: #c96510; transform: translateY(-1px); }
+
+  /* ── EMPTY STATE ── */
+  .editais-vazio {
+    text-align: center; padding: 4rem 2rem;
+    background: var(--verde-ultra); border: 1.5px dashed var(--borda);
+    border-radius: 20px; color: var(--cinza-medio);
+  }
+  .editais-vazio span { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+  .editais-vazio p { font-size: 0.95rem; line-height: 1.7; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--verde-ultra); border-top: 1px solid var(--borda);
+    padding: 2rem 3rem; display: flex;
+    align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 900; color: var(--verde);
+  }
+  footer small { font-size: 0.78rem; color: var(--cinza-medio); }
+  footer a { color: var(--verde); text-decoration: none; font-weight: 600; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0.9rem 1.25rem; }
+    .nav-hamburger { display: flex; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--borda);
+      flex-direction: column; padding: 1rem 1.5rem 1.5rem; gap: 0.5rem; z-index: 100;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 0.6rem 0; font-size: 1rem; border-bottom: 1px solid var(--borda); }
+    .nav-links a:last-child { border-bottom: none; margin-top: 0.5rem; }
+    .nav-cta { text-align: center; }
+
+    .editais-hero { padding: 2.5rem 1.25rem 2rem; }
+    .editais-filtros { padding: 0 1.25rem 1.25rem; }
+    .editais-lista { padding: 0 1.25rem 4rem; }
+
+    .edital-info-grid { grid-template-columns: 1fr 1fr; }
+    .edital-cargo-stats { margin-left: 0; margin-top: 0.5rem; }
+    .btn-edital-inscricao { margin-left: 0; margin-top: 0.75rem; width: 100%; text-align: center; }
+    .edital-badge { margin-left: 0; }
+
+    footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .edital-info-grid { grid-template-columns: 1fr; }
+    .edital-body { padding: 1.25rem; }
+    .edital-header { padding: 1.25rem; gap: 12px; }
+    .edital-header-text h3 { font-size: 1rem; }
+    .edital-tabela { font-size: 0.75rem; }
+    .edital-tabela th, .edital-tabela td { padding: 7px 8px; }
+    .edital-cargo-box { flex-direction: column; align-items: flex-start; }
+    .edital-cargo-stats { gap: 1rem; }
+    .editais-hero-stats { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  const blobs = [
+    { x: 0.15, y: 0.15, r: 0.38, dx: 0.00018, dy: 0.00012, phase: 0,   color: [45,106,45,0.10] },
+    { x: 0.78, y: 0.25, r: 0.32, dx:-0.00014, dy: 0.00016, phase: 1.2, color: [61,139,61,0.08] },
+    { x: 0.50, y: 0.70, r: 0.42, dx: 0.00010, dy:-0.00018, phase: 2.5, color: [45,106,45,0.07] },
+    { x: 0.88, y: 0.80, r: 0.28, dx:-0.00020, dy:-0.00010, phase: 0.7, color: [93,190,58,0.06] },
+  ];
+  let t = 0;
+  function draw() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+    blobs.forEach(b => {
+      const bx = (b.x + Math.sin(t*0.0004+b.phase)*0.12)*W;
+      const by = (b.y + Math.cos(t*0.0003+b.phase)*0.10)*H;
+      const br = b.r*Math.min(W,H)*(1+Math.sin(t*0.0005+b.phase*2)*0.08);
+      const grad = ctx.createRadialGradient(bx,by,0,bx,by,br);
+      const [r,g,bb,a] = b.color;
+      grad.addColorStop(0,`rgba(${r},${g},${bb},${a})`);
+      grad.addColorStop(0.5,`rgba(${r},${g},${bb},${a*0.5})`);
+      grad.addColorStop(1,`rgba(${r},${g},${bb},0)`);
+      ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2);
+      ctx.fillStyle = grad; ctx.fill();
+    });
+    t++; requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="22" r="7" fill="#E07820"/>
+        <path d="M14 30 Q20 12 46 18" stroke="#5DBE3A" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M14 30 Q22 48 48 36" stroke="#3D8B3D" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="nav-brand">
+      CCPSJ
+      <small>Conselho Comunitário do Parque São José</small>
+    </div>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html#programas" onclick="closeMenu()">Programas</a>
+    <a href="index.html#sobre" onclick="closeMenu()">Sobre nós</a>
+    <a href="index.html#impacto" onclick="closeMenu()">Impacto</a>
+    <a href="editais.html" class="active" onclick="closeMenu()">Editais</a>
+    <a href="index.html#contato" onclick="closeMenu()">Contato</a>
+    <a href="index.html#doar" class="nav-cta" onclick="closeMenu()">Fazer doação</a>
+  </div>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<div class="editais-hero">
+  <div class="breadcrumb">
+    <a href="index.html">← Início</a>
+    <span>/</span>
+    <span>Editais de Seleção</span>
+  </div>
+  <h1>Editais de <em>Seleção Pública</em></h1>
+  <p>
+    Processos seletivos abertos em conformidade com os Termos de Colaboração firmados junto ao
+    Governo do Estado do Ceará. Transparência e oportunidade para a comunidade.
+  </p>
+  <div class="editais-hero-stats">
+    <div>
+      <strong>01</strong>
+      <span>Edital<br>aberto</span>
+    </div>
+    <div>
+      <strong>SDA-CE</strong>
+      <span>Secretaria do<br>Desenv. Agrário</span>
+    </div>
+    <div>
+      <strong>100%</strong>
+      <span>Processo<br>transparente</span>
+    </div>
+  </div>
+</div>
+
+<!-- FILTROS -->
+<div class="editais-filtros">
+  <span class="filtro-label">Filtrar:</span>
+  <button class="filtro-btn active" onclick="filtrar(this,'todos')">Todos</button>
+  <button class="filtro-btn" onclick="filtrar(this,'aberto')">🟠 Em andamento</button>
+  <button class="filtro-btn" onclick="filtrar(this,'encerrado')">Encerrados</button>
+  <button class="filtro-btn" onclick="filtrar(this,'resultado')">✅ Resultado publicado</button>
+</div>
+
+<!-- LISTA DE EDITAIS -->
+<div class="editais-lista" id="editais-lista">
+
+  <!-- ══════════════════════════════════════════
+       EDITAL 03/2026 — Auxiliar Administrativo
+       ══════════════════════════════════════════ -->
+  <div class="edital-card" data-status="encerrado">
+    <div class="edital-header">
+      <div class="edital-header-icon">📋</div>
+      <div class="edital-header-text">
+        <h3>Edital de Seleção Pública N° 03/2026</h3>
+        <span>Publicado em 20 de Abril de 2026 &nbsp;·&nbsp; Programa Ceará Sem Fome / SDA-CE</span>
+      </div>
+      <span class="edital-badge encerrado">⚫ Encerrado</span>
+    </div>
+
+    <div class="edital-body">
+
+      <div class="edital-info-grid">
+        <div class="edital-info-item">
+          <small>Termo de Colaboração</small>
+          <strong>Nº 11/2025 — SDA/CE</strong>
+        </div>
+        <div class="edital-info-item">
+          <small>Envio de Currículos até</small>
+          <strong>24 de Abril de 2026</strong>
+        </div>
+        <div class="edital-info-item">
+          <small>Resultado Final em</small>
+          <strong>27 de Abril de 2026</strong>
+        </div>
+      </div>
+
+      <p class="edital-desc">
+        O CCPSJ torna público o presente processo seletivo para contratação de profissional destinado a apoiar o
+        <strong>Gerenciamento das Unidades Sociais de Produção de Refeições (USPRs)</strong> do <strong>Programa Ceará Sem Fome</strong>, Lote 10,
+        conforme Plano de Trabalho nº 14332953/2025 e Processo Administrativo nº 21001.004064/2025-51, firmado junto ao Governo do Estado do Ceará
+        através da Secretaria do Desenvolvimento Agrário — SDA.
+      </p>
+
+      <p class="edital-section-title">Vaga disponível</p>
+      <div class="edital-cargo-box">
+        <div>
+          <div class="cargo-nome">Auxiliar Administrativo</div>
+          <div class="cargo-detalhe">Contratação CLT · Nível médio / técnico / profissionalizante</div>
+        </div>
+        <div class="edital-cargo-stats">
+          <span><strong>01</strong><small>Vaga</small></span>
+          <span><strong>R$&nbsp;1.621</strong><small>Bruto/mês</small></span>
+          <span><strong>40h</strong><small>Semanais</small></span>
+          <span><strong>6 meses</strong><small>Prorrogável</small></span>
+        </div>
+      </div>
+
+      <p class="edital-section-title">Principais atribuições</p>
+      <ul class="edital-atrib-list">
+        <li>Apoiar a Coordenação e a Gerência Financeira, encarregando-se das agendas</li>
+        <li>Arquivamento de documentos e relatórios</li>
+        <li>Gerenciar e atualizar arquivos, controle de contas e outras atividades administrativas</li>
+        <li>Apoiar na comunicação com os entes parceiros e agentes de campo</li>
+        <li>Auxiliar na elaboração dos relatórios de execução do Programa</li>
+        <li>Participar das reuniões da equipe, da diretoria e de eventos de interesse institucional</li>
+      </ul>
+
+      <button class="edital-toggle-btn" onclick="toggleEdital(this)">
+        <span class="toggle-label">Ver edital completo</span>
+        <span class="toggle-arrow" style="font-size:0.7rem;">▼</span>
+      </button>
+
+      <div class="edital-full">
+
+        <div class="edital-full-section">
+          <h5>Perfil e requisitos</h5>
+          <p>Profissional com nível médio e/ou técnico e/ou profissionalizante; experiência, de preferência em projetos e programas sociais; desejável habilidade em processos de gestão, senso de trabalho em equipe, bom relacionamento interpessoal, senso ético, comprometimento com metas, domínio de softwares e habilidade em informática.</p>
+        </div>
+
+        <div class="edital-full-section">
+          <h5>Remuneração</h5>
+          <div style="overflow-x:auto;">
+            <table class="edital-tabela">
+              <thead>
+                <tr><th>Qtd</th><th>Cargo</th><th>Período</th><th>Valor Mensal (bruto)</th><th>Valor Global (bruto)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>01</td><td>Auxiliar Administrativo</td><td>06 meses</td><td>R$ 1.621,00</td><td>R$ 9.600,00</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="edital-full-section">
+          <h5>Forma de contratação e pagamento</h5>
+          <p>A contratação será por <strong>Contrato CLT</strong> pelo prazo de 06 meses, podendo ser prorrogado conforme a vigência do Termo de Colaboração nº 11/2025. O pagamento ocorre via <strong>OBT — Ordem Bancária de Transferência</strong>, pela plataforma E-parceria, mediante contrato firmado, folha de pagamento e contracheque assinado.</p>
+        </div>
+
+        <div class="edital-full-section">
+          <h5>Etapas do processo seletivo</h5>
+          <p>
+            <strong>1ª Etapa:</strong> Análise de currículo (eliminatória)<br><br>
+            <strong>2ª Etapa:</strong> Entrevista presencial ou online — prevista para <strong>22 de Abril de 2026</strong>, agendada previamente com cada candidato.<br><br>
+            Os candidatos aprovados serão comunicados por e-mail ou outros contatos disponíveis no currículo enviado.
+          </p>
+        </div>
+
+        <div class="edital-full-section">
+          <h5>Divulgação dos resultados</h5>
+          <p>
+            O resultado final será divulgado em <strong>27 de Abril de 2026</strong> na sede do CCPSJ e enviado por e-mail aos candidatos aprovados.
+            Os aprovados terão o prazo de <strong>02 dias úteis</strong> para manifestar interesse na vaga, sob pena de desclassificação.
+          </p>
+        </div>
+
+        <div class="edital-full-section">
+          <h5>Publicação e assinatura</h5>
+          <p>
+            Fortaleza/CE, 20 de Abril de 2026<br>
+            <strong>Francisco Danny Vieira Maia</strong> — Presidente do CCPSJ<br>
+            Conselho Comunitário do Parque São José
+          </p>
+        </div>
+
+      </div><!-- /edital-full -->
+
+      <div class="edital-inscricao" style="background:var(--cinza-claro); border-color:#ccc;">
+        <div class="edital-inscricao-text">
+          <h4>⚫ Inscrições encerradas</h4>
+          <p>
+            O prazo de envio de currículos foi encerrado em <strong>24 de Abril de 2026</strong>.<br>
+            O resultado final foi divulgado em <strong>27 de Abril de 2026</strong>.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /edital-body -->
+  </div><!-- /edital-card -->
+
+  <!-- Quando não houver editais visíveis no filtro -->
+  <div class="editais-vazio" id="vazio" style="display:none;">
+    <span>📭</span>
+    <p>Nenhum edital encontrado nessa categoria no momento.<br>
+    Fique de olho — novos processos seletivos são publicados conforme os programas em andamento.</p>
+  </div>
+
+</div><!-- /editais-lista -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">CCPSJ</div>
+  <small>Conselho Comunitário do Parque São José — Fortaleza, CE</small>
+  <small><a href="index.html">← Voltar ao site principal</a> &nbsp;·&nbsp; © 2026</small>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('nav-links').classList.toggle('open');
+    document.getElementById('nav-hamburger').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('nav-links').classList.remove('open');
+    document.getElementById('nav-hamburger').classList.remove('open');
+  }
+
+  function toggleEdital(btn) {
+    const full = btn.nextElementSibling;
+    const label = btn.querySelector('.toggle-label');
+    const arrow = btn.querySelector('.toggle-arrow');
+    full.classList.toggle('open');
+    if (full.classList.contains('open')) {
+      label.textContent = 'Recolher edital';
+      arrow.textContent = '▲';
+      full.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      label.textContent = 'Ver edital completo';
+      arrow.textContent = '▼';
+    }
+  }
+
+  function filtrar(btn, status) {
+    // Atualiza botões
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Filtra cards
+    const cards = document.querySelectorAll('.edital-card');
+    let visiveis = 0;
+    cards.forEach(card => {
+      const cardStatus = card.dataset.status;
+      const mostrar = status === 'todos' || cardStatus === status;
+      card.style.display = mostrar ? 'block' : 'none';
+      if (mostrar) visiveis++;
+    });
+
+    document.getElementById('vazio').style.display = visiveis === 0 ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
